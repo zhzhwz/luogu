@@ -1,0 +1,13 @@
+#include <cstdio>
+
+struct node{
+    int fa;
+    int v;
+}father[50009];
+
+int find(int n){
+    if(n == father[n].fa) return n;
+
+int main(){
+    return 0;
+}
