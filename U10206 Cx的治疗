@@ -1,0 +1,111 @@
+#include <cstdio>
+
+int top = 0;
+struct Node{
+    int a;
+    int b;
+    int c;
+    Node(int aa = 0, int bb = 0, int cc = 0){
+        a = aa;
+        b = bb;
+        c = cc;
+    }
+    Node operator = (const Node &x){
+        a = x.a;
+        b = x.b;
+        c = x.c;
+        return *this;
+    }
+}heap[10009];
+
+bool operator <(const Node &a, const Node &b){
+    return a.c < b.c;
+}
+
+int father[10009];
+
+void swap(Node &x, Node &y){
+    Node t = x;
+    x = y;
+    y = t;
+    return ;
+}
+
+int getfather(int a){
+    if(father[a] == a) return a;
+    father[a] = getfather(father[a]);
+    return father[a];
+}
+
+void add(int a, int b){
+    father[getfather(a)] = getfather(b);
+    return ;
+}
+
+void push(Node a){
+    heap[++top] = a;
+    int pos = top;
+    while(pos > 1){
+        if(heap[pos / 2] < heap[pos]) break;
+        swap(heap[pos], heap[pos / 2]);
+        pos /= 2;
+    }
+    return ;
+}
+
+Node pop(){
+    Node ret = heap[1];
+    heap[1] = heap[top--];
+    int pos = 1;
+    while(pos <= top / 2){
+        int min;
+        if(heap[pos * 2] < heap[pos * 2 + 1]){
+            min = pos * 2;
+        }else{
+            min = pos * 2 + 1;
+        }
+        if(heap[pos] < heap[min]) break;
+        swap(heap[pos], heap[min]);
+        pos = min;
+    }
+    return ret;
+}
+
+int main(){
+    int n, m;
+    scanf("%d %d", &n, &m);
+    for(int i = 0;i < n;++i){
+        father[i] = i;
+    }
+    for(int i = 0;i < m;++i){
+        int a, b;
+        scanf("%d %d", &a, &b);
+        add(father[a], father[b]);
+    }
+    int t;
+    scanf("%d", &t);
+    for(int i = 0;i < t;++i){
+        int a, b, c;
+        scanf("%d %d %d", &a, &b, &c);
+        Node x(a, b, c);
+        push(x);
+    }
+    int sum = 0;
+    for(int i = 0;i < n;++i){
+        if(father[i] != i) ++sum;
+    }
+    int ans = 0;
+    while(sum < n - 1){
+        if(!top){
+            printf("-1\n");
+            return 0;
+        }
+        Node x = pop();
+        if(getfather(x.a) == getfather(x.b)) continue;
+        add(x.a, x.b);
+        ans += x.c;
+        ++sum;
+    }
+    printf("%d\n", ans);
+    return 0;
+}
