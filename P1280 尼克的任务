@@ -20,12 +20,12 @@ int main(){
         task[i].s = p - 1;
         task[i].e = p + t - 1;
     }
-    task[0].s = 0;
+    task[0].s = -1;
     task[0].e = 0;
     task[k + 1].s = n;
     task[k + 1].e = n;
     sort(task + 1, task + k + 1);
-    int maxs = 0;
+    int maxs = -1;
     for(int i = 1;i <= k + 1;++i){
         for(int j = 0;j < i;++j)
             if(maxs < task[j].e && f[i] < f[j] + task[i].s - task[j].e) f[i] = f[j] + task[i].s - task[j].e;
