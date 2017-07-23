@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int f[10009];
+struct Task{
+    int s;
+    int e;
+}task[10009];
+
+bool cmp(const Task &a, const Task &b){
+    return a.e < b.e;
+}
+
+int main(){
+    int n, k;
+    scanf("%d %d", &n, &k);
+    for(int i = 1;i <= k;++i){
+        int p, t;
+        scanf("%d %d", &p, &t);
+        task[i].s = p;
+        task[i].e = p + t;
+    }
+    task[0].s = 1;
+    task[0].e = 1;
+    sort(task, task + k + 1, cmp);
+    for(int i = 1;i <= k;++i){
+        int t = 0;
+        while(task[t + 1].e <= task[i].s) ++t;
+        int maxs = task[0].s;
+        for(int j = 0;j <= k;++j) if(task[j].s < task[i].s && maxs < task[j].s) maxs = task[j].s;
+        int h = t;
+        while(h > 0 && task[h - 1].e > maxs) --h;
+        for(int j = h;j <= t;++j) f[i] = max(f[i], f[j] + task[i].s - task[j].e);
+    }
+    int maxs = task[0].s;
+    int max = 0;
+    for(int i = 0;i <= k;++i) if(maxs < task[i].s) maxs = task[i].s;
+    for(int i = 0;i <= k;++i) if(task[i].e > maxs && max < f[i] + n - task[i].e + 1) max = f[i] + n - task[i].e + 1;
+    printf("%d\n", max);
+    return 0;
+}
