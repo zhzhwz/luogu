@@ -30,9 +30,10 @@ int main(){
     int maxs = -1;
     for(int i = 1;i <= k + 1;++i){
         for(int j = 0;j < i;++j)
-            if(maxs < task[j].e && f[i] < f[j] + task[i].s - task[j].e){
+            if(maxs < task[j].e && task[i].s - task[j].e >= 0 && f[i] < f[j] + task[i].s - task[j].e){
                 f[i] = f[j] + task[i].s - task[j].e;
-                //if(f[k + 1] == 2) printf("!%d %d!\n", i, j);
+                //if(f[k + 1] == 5) printf("!%d %d, %d!\n", i, j, f[j]);
+                //if(f[4] == -1) printf("!%d %d, %d!\n", i, j, f[j]);
             }
         if(task[i].s != task[i + 1].s && maxs < task[i].s) maxs = task[i].s;
     }
