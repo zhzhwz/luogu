@@ -20,15 +20,20 @@ int main(){
         task[i].s = p - 1;
         task[i].e = p + t - 1;
     }
+    for(int i = 1;i <= k;++i) f[i] = 0xb0000000;
     task[0].s = -1;
     task[0].e = 0;
     task[k + 1].s = n;
     task[k + 1].e = n;
     sort(task + 1, task + k + 1);
+    //for(int i = 0;i <= k + 1;++i) printf("s: %d, e: %d\n", task[i].s, task[i].e);
     int maxs = -1;
     for(int i = 1;i <= k + 1;++i){
         for(int j = 0;j < i;++j)
-            if(maxs < task[j].e && f[i] < f[j] + task[i].s - task[j].e) f[i] = f[j] + task[i].s - task[j].e;
+            if(maxs < task[j].e && f[i] < f[j] + task[i].s - task[j].e){
+                f[i] = f[j] + task[i].s - task[j].e;
+                //if(f[k + 1] == 2) printf("!%d %d!\n", i, j);
+            }
         if(task[i].s != task[i + 1].s && maxs < task[i].s) maxs = task[i].s;
     }
     printf("%d\n", f[k + 1]);
