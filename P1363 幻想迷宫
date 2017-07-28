@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int dr[4] = {-1, 0, 0, 1};
+const int dc[4] = {0, -1, 1, 0};
+
+int n, m;
+bool flag;
+int graph[1509][1509];
+bool vis[1509][1509][5];
+
+char readchar(){
+    char c = getchar();
+    while(c == '\n' || c == '\r'){
+        c = getchar();
+    }
+    return c;
+}
+
+void dfs(int r, int c, int d){
+    for(int i = 0;i < 4;++i){
+        if(flag) return ;
+        if(d == i) continue;
+        r = (r + dr[i] + n) % n;
+        c = (c + dc[i] + m) % m;
+        if(graph[r][c] != '#'){
+            if(vis[r][c][i]){
+                flag = true;
+                return ;
+            }
+            vis[r][c][i] = true;
+            dfs(r, c, 3 - i);
+        }
+        r = (r - dr[i] + n) % n;
+        c = (c - dc[i] + m) % m;
+    }
+    return ;
+}
+
+int main(){
+    while(scanf("%d %d", &n, &m) == 2){
+        int r, c;
+        for(int i = 0;i < n;++i){
+            for(int j = 0;j < m;++j){
+                graph[i][j] = readchar();
+                if(graph[i][j] == 'S') r = i, c = j;
+            }
+        }
+        memset(vis, false, sizeof(vis));
+        flag = false;
+        dfs(r, c, -1);
+        if(flag) printf("Yes\n");
+        else printf("No\n");
+    }
+    return 0;
+}
