@@ -12,7 +12,7 @@ int main(){
             scanf("%d", &graph[i][j]);
     for(int i = m;i > 0;--i){
         for(int j = 0;j < n;++j){
-            if((n + 1) / 2 + i - m <= j && j <= (n + 1) / 2 + m - i){
+            if((n - 1) / 2 + i - m <= j && j <= (n - 1) / 2 + m - i){
                 if(j - 1 >= 0 && f[i - 1][j - 1] < f[i][j] + graph[i - 1][j - 1])
                     f[i - 1][j - 1] = f[i][j] + graph[i - 1][j - 1];
                 if(f[i - 1][j] < f[i][j] + graph[i - 1][j])
@@ -23,7 +23,7 @@ int main(){
         }
     }
     int sum = 0xb0000000;
-    for(int i = (n + 1) / 2 - m;i <= (n + 1) / 2 + m;++i){
+    for(int i = max(0, (n - 1) / 2 - m);i <= min(n - 1, (n - 1) / 2 + m);++i){
         if(sum < f[0][i]) sum = f[0][i];
     }
     printf("%d\n", sum);
