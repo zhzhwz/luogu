@@ -1,0 +1,61 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+
+int up[2509][2509];
+int left[2509][2509];
+int right[2509][2509];
+int f[2509][2509];
+int graph[2509][2509];
+
+int main(){
+    int n, m;
+    scanf("%d %d", &n, &m);
+    for(int i = 0;i < n;++i){
+        for(int j = 0;j < m;++j){
+            scanf("%d", &graph[i][j]);
+        }
+    }
+    for(int i = 0;i < n;++i){
+        for(int j = 0;j < m;++j){
+            if(i == 0) up[i][j] = 1 - graph[i][j];
+            else if(graph[i][j] == 0) up[i][j] = up[i - 1][j] + 1;
+        }
+    }
+
+    for(int i = 0;i < n;++i){
+        for(int j = 0;j < m;++j){
+            if(i == 0) left[i][j] = 1 - graph[i][j];
+            else if(graph[i][j] == 0) left[i][j] = left[i][j - 1] + 1;
+        }
+    }
+
+    for(int i = 0;i < n;++i){
+        for(int j = m - 1;j >= 0;--j){
+            if(i == 0) right[i][j] = 1 - graph[i][j];
+            else if(graph[i][j] == 0) right[i][j] = right[i][j + 1] + 1;
+        }
+    }
+
+    int ans = 0;
+    for(int i = 0;i < n;++i){
+        for(int j = 0;j < m;++j){
+            if(i == 0 || j == 0) f[i][j] = graph[i][j];
+            else if(graph[i][j]) f[i][j] = min(f[i - 1][j - 1], min(left[i][j - 1], up[i - 1][j])) + 1;
+            ans = max(ans, f[i][j]);
+        }
+    }
+
+    memset(f, 0, sizeof(f));
+    for(int i = 0;i < n;++i){
+        for(int j = m - 1;j >= 0;--j){
+            if(i == 0 || j == m - 1) f[i][j] = graph[i][j];
+            else if(graph[i][j]) f[i][j] = min(f[i - 1][j + 1], min(right[i][j + 1], up[i - 1][j])) + 1;
+            ans = max(ans, f[i][j]);
+        }
+    }
+
+    printf("%d\n", ans);
+    return 0;
+}
