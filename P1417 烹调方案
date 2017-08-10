@@ -3,7 +3,7 @@
 using namespace std;
 
 struct Food{
-    int a, b, c;
+    long long a, b, c;
 }food[59];
 bool operator < (const Food &x, const Food &y){return x.b * y.c > y.b * x.c;}
 
@@ -16,8 +16,8 @@ int main(){
     for(int i = 0;i < n;++i) scanf("%d", &food[i].b);
     for(int i = 0;i < n;++i) scanf("%d", &food[i].c);
     sort(food, food + n);
-    for(int i = 0;i < n;++i){
-        for(int j = t - food[i].c;j >= 0;--j){
+    for(long long i = 0;i < n;++i){
+        for(long long j = t - food[i].c;j >= 0;--j){
             f[j + food[i].c] = max(f[j + food[i].c], f[j] + food[i].a - food[i].b * (j + food[i].c));
         }
     }
