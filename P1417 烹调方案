@@ -1,0 +1,26 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+
+struct Food{
+    int a, b, c;
+    bool operator < (const Food &x)const{return b < x.b;}
+}food[59];
+
+int f[100009];
+
+int main(){
+    int t, n;
+    scanf("%d %d", &t, &n);
+    for(int i = 0;i < n;++i) scanf("%d %d %d", &food[i].a, &food[i].b, &food[i].c);
+    sort(food, food + n);
+    for(int i = 0;i < n;++i){
+        for(int j = t - food[i].c;j >= 0;--j){
+            f[j + food[i].c] = max(f[j + food[i].c], f[j] + food[i].a - food[i].b * (j + food[i].c));
+        }
+    }
+    int ans = 0;
+    for(int i = 0;i < t;++i) if(ans < f[i]) ans = f[i];
+    printf("%d\n", ans);
+    return 0;
+}
