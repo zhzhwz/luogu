@@ -1,0 +1,25 @@
+#include <cstdio>
+
+int n, r;
+int ans[29];
+
+void dfs(int now, int no){
+    if(no == r){
+        for(int i = 0;i < r;++i){
+            printf("%3d", ans[i]);
+        }
+        printf("\n");
+        return ;
+    }
+    for(int i = now + 1;i <= n;++i){
+        if(r - no > n - i + 1) break;
+        ans[no] = i;
+        dfs(i, no + 1);
+    }
+}
+
+int main(){
+    scanf("%d %d", &n, &r);
+    dfs(0, 0);
+    return 0;
+}
