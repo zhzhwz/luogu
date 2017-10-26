@@ -1,0 +1,51 @@
+#include <cstdio>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int maxf[100009];
+
+struct node{
+	int dis;
+	int val;
+	bool operator <(const node &a)const{return val>a.val;}
+}arr[100009];
+
+bool cmp(const node &a,const node &b){return a.dis<b.dis;}
+
+inline int getv(const node &a){return a.dis*2+a.val;}
+
+int main(){
+	int n;
+	scanf("%d",&n);
+	for(int i=1;i<=n;++i) scanf("%d",&arr[i].dis);
+	for(int i=1;i<=n;++i) scanf("%d",&arr[i].val);
+	sort(arr,arr+n,cmp);
+/*	for(int i=1;i<=n;++i) printf("%3d",arr[i].dis);
+	printf("\n");
+	for(int i=1;i<=n;++i) printf("%3d",arr[i].val);
+	printf("\n");*/
+	for(int i=n;i>=1;--i){
+		if(getv(arr[i])>=getv(arr[maxf[i+1]])) maxf[i]=i;
+		else maxf[i]=maxf[i+1];
+	}
+/*	for(int i=1;i<=n;++i) printf("%3d",maxf[i]);
+	printf("\n");
+	for(int i=1;i<=n;++i) printf("%3d",getv(arr[maxf[i]]));
+	printf("\n");*/
+	priority_queue<int> h;
+	int now=0,ans=0;
+	for(int i=1;i<=n;++i){
+		int next=maxf[now+1];
+		if(h.empty() || h.top()<getv(arr[next])-arr[now].dis*2){
+			for(int j=now+1;j<next;++j) h.push(arr[j].val);
+			ans+=getv(arr[next])-arr[now].dis*2;
+			now=next;
+		}else{
+			ans+=h.top();
+			h.pop();	
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}
